@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS "logs" (
     "deleted_at" TIMESTAMPTZ,
     "metadata" JSONB NOT NULL DEFAULT '{}',
     "microservice_id" VARCHAR NOT NULL,
+    -- TODO: Add log level enum
     "log_level" VARCHAR NOT NULL,
     "message" VARCHAR NOT NULL,
     PRIMARY KEY ("id"),
