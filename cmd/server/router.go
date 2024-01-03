@@ -37,6 +37,10 @@ func initRouter(h *handler.Handler) *chi.Mux {
 	// routes
 	router.Get("/", h.Ping)
 	router.Get("/ping", h.Ping)
+	router.Post("/microservice", h.CreateMicroservice)
+	router.Get("/microservice/{id}", h.GetMicroservice)
+	router.Get("/microservices", h.ListMicroservices)
+	router.Put("/microservice", h.UpdateMicroservice)
 
 	return router
 }

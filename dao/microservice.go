@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"log-management/domain"
+	"time"
 
 	"github.com/rs/zerolog/log"
 )
@@ -47,7 +48,11 @@ func (d *pgDAO) ListMicroservices(ctx context.Context) ([]*domain.Microservice, 
 
 // Update microservice
 func (d *pgDAO) UpdateMicroservice(ctx context.Context, microservice *domain.Microservice) (*domain.Microservice, error) {
-	if _, err := d.DB.NewUpdate().Model(microservice).Where("id = ?", microservice.ID).Exec(ctx); err != nil {
+	microservice.UpdatedAt = time.Now()
+
+	if _, err := d.DB.NewUpdate().Model(microservice).WherePK().
+		Column("name", "description", "updated_at").
+		Returning("*").Exec(ctx); err != nil {
 		log.Error().Err(err).Msg("failed to update microservice")
 		return nil, err
 	}
