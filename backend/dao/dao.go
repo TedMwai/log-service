@@ -14,6 +14,7 @@ type DAO interface {
 
 	ListMicroservices(ctx context.Context) ([]*domain.Microservice, error)
 	ListLogs(ctx context.Context, microserviceID string) ([]*domain.Log, error)
+	ListAllLogs(ctx context.Context) ([]*domain.Log, error)
 
 	UpdateMicroservice(ctx context.Context, microservice *domain.Microservice) (*domain.Microservice, error)
 	UpdateLog(ctx context.Context, log *domain.Log) (*domain.Log, error)

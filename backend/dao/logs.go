@@ -4,8 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	lg "github.com/rs/zerolog/log"
 	"log-management/domain"
+	"time"
+
+	lg "github.com/rs/zerolog/log"
 )
 
 func (d *pgDAO) CreateLog(ctx context.Context, log *domain.Log) (*domain.Log, error) {
@@ -44,9 +46,27 @@ func (d *pgDAO) ListLogs(ctx context.Context, microserviceID string) ([]*domain.
 	return logs, nil
 }
 
+// List all logs
+func (d *pgDAO) ListAllLogs(ctx context.Context) ([]*domain.Log, error) {
+	var logs []*domain.Log
+
+	if err := d.DB.NewSelect().Model(&logs).
+		Relation("Microservice").
+		Scan(ctx); err != nil {
+		lg.Error().Err(err).Msg("failed to list logs")
+		return nil, err
+	}
+
+	return logs, nil
+}
+
 // Update log
 func (d *pgDAO) UpdateLog(ctx context.Context, log *domain.Log) (*domain.Log, error) {
-	if _, err := d.DB.NewUpdate().Model(log).Where("id = ?", log.ID).Exec(ctx); err != nil {
+	log.UpdatedAt = time.Now()
+
+	if _, err := d.DB.NewUpdate().Model(log).WherePK().
+		Column("message", "updated_at").
+		Returning("*").Exec(ctx); err != nil {
 		lg.Error().Err(err).Msg("failed to update log")
 		return nil, err
 	}
