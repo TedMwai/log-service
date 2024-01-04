@@ -4,25 +4,15 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/go-chi/chi/v5"
 	lg "github.com/rs/zerolog/log"
 )
 
-type getLogRequest struct {
-	ID string `json:"id"`
-}
-
 func (h *Handler) GetLog(w http.ResponseWriter, r *http.Request) {
-	var getLogReq getLogRequest
+	id := chi.URLParam(r, "id")
 	ctx := r.Context()
 
-	err := json.NewDecoder(r.Body).Decode(&getLogReq)
-	if err != nil {
-		lg.Error().Err(err).Msg("Error decoding request body")
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	log, err := h.db.GetLog(ctx, getLogReq.ID)
+	log, err := h.db.GetLog(ctx, id)
 	if err != nil {
 		lg.Error().Err(err).Msg("Error getting log")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -35,11 +25,24 @@ func (h *Handler) GetLog(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	microservice, err := h.db.GetMicroservice(ctx, log.MicroserviceID)
+	if err != nil {
+		lg.Error().Err(err).Msg("Error getting microservice associated with the log")
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	logResp := LogResponse{
+		ID:               log.ID,
+		MicroserviceName: microservice.Name,
+		Level:            log.LogLevel,
+		Message:          log.Message,
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
-	// TODO: Send also microservice name
-	err = json.NewEncoder(w).Encode(log)
+	err = json.NewEncoder(w).Encode(logResp)
 	if err != nil {
 		lg.Error().Err(err).Msg("Error encoding response body")
 		http.Error(w, err.Error(), http.StatusInternalServerError)

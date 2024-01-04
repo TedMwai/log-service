@@ -14,6 +14,13 @@ type logRequest struct {
 	Message        string `json:"message"`
 }
 
+type LogResponse struct {
+	ID               string `json:"id"`
+	MicroserviceName string `json:"microservice_name"`
+	Level            string `json:"level"`
+	Message          string `json:"message"`
+}
+
 func (h *Handler) CreateLog(w http.ResponseWriter, r *http.Request) {
 	var logReq logRequest
 	ctx := r.Context()
@@ -47,10 +54,17 @@ func (h *Handler) CreateLog(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	logResp := LogResponse{
+		ID:               log.ID,
+		MicroserviceName: microservice.Name,
+		Level:            log.LogLevel,
+		Message:          log.Message,
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 
-	err = json.NewEncoder(w).Encode(log)
+	err = json.NewEncoder(w).Encode(logResp)
 	if err != nil {
 		lg.Error().Err(err).Msg("Error encoding response body")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
