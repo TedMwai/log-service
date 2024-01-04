@@ -49,7 +49,10 @@ func (d *pgDAO) ListLogs(ctx context.Context, microserviceID string) ([]*domain.
 // List all logs
 func (d *pgDAO) ListAllLogs(ctx context.Context) ([]*domain.Log, error) {
 	var logs []*domain.Log
-	if err := d.DB.NewSelect().Model(&logs).Scan(ctx); err != nil {
+
+	if err := d.DB.NewSelect().Model(&logs).
+		Relation("Microservice").
+		Scan(ctx); err != nil {
 		lg.Error().Err(err).Msg("failed to list logs")
 		return nil, err
 	}
