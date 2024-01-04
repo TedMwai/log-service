@@ -1,6 +1,7 @@
 include .env
 export
 COMMIT := $(shell git log -1 --format="%H")
+DOCKER_IMAGE := "log-management:latest"
 
 up:
 	docker compose up -d
