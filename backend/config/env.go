@@ -39,3 +39,5 @@ var AppIsDebug = AppEnv == AppEnvDebug
 var AppName = GetEnv("APP_NAME", "service.log-management")
 var AppPort = GetEnv("APP_PORT", "8080")
 var DB_URL = GetEnv("POSTGRESQL_URL", "postgres://postgres:password@localhost:5432/log?sslmode=disable")
+var RESEND_API_KEY = MustGetEnv("RESEND_API_KEY")
+var DEV_EMAIL = MustGetEnv("DEV_EMAIL")

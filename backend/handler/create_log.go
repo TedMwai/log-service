@@ -2,9 +2,12 @@ package handler
 
 import (
 	"encoding/json"
+	"log-management/config"
 	"log-management/domain"
 	"net/http"
+	"strings"
 
+	"github.com/resend/resend-go/v2"
 	lg "github.com/rs/zerolog/log"
 )
 
@@ -52,6 +55,28 @@ func (h *Handler) CreateLog(w http.ResponseWriter, r *http.Request) {
 		lg.Error().Err(err).Msg("Error creating log")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	}
+
+	// check if log level is fatal
+	if strings.ToLower(log.LogLevel) == "fatal" {
+		// send email
+		client := resend.NewClient(config.RESEND_API_KEY)
+
+		params := &resend.SendEmailRequest{
+			From:    "Acme <onboarding@resend.dev>",
+			To:      []string{config.DEV_EMAIL},
+			Html:    "<strong>We have received a FATAL LOG</strong>",
+			Subject: "FATAL LOG RECEIVED 🚩🚩",
+		}
+
+		sent, err := client.Emails.Send(params)
+		if err != nil {
+			lg.Error().Err(err).Msg("Error sending email")
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		lg.Info().Msgf("Email sent: %s", sent.Id)
 	}
 
 	logResp := LogResponse{

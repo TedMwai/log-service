@@ -6,6 +6,7 @@ require github.com/rs/zerolog v1.31.0
 
 require (
 	github.com/fatih/color v1.15.0 // indirect
+	github.com/resend/resend-go/v2 v2.4.0 // indirect
 	github.com/rs/xid v1.5.0 // indirect
 	golang.org/x/crypto v0.13.0 // indirect
 	mellium.im/sasl v0.3.1 // indirect
