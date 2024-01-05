@@ -36,4 +36,4 @@ build:
 	docker build -t ${DOCKER_IMAGE} --network host --build-arg COMMIT .
 
 test:
-	go test ./... -count=2
+	go test -cover ./... -count=2
