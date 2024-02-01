@@ -12,7 +12,7 @@ import { DataTableRowActions } from "./data-table-row-actions"
 
 export const columns: ColumnDef<Task>[] = [
   {
-    id: "select",
+    id: "selection",
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
@@ -33,16 +33,16 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "id",
+    accessorKey: "ID",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Log" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
+    cell: ({ row }) => <div className="w-[80px]">{row.getValue("ID")}</div>,
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "title",
+    accessorKey: "Message",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Description" />
     ),
@@ -50,20 +50,20 @@ export const columns: ColumnDef<Task>[] = [
       return (
         <div className="flex space-x-2">
           <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("title")}
+            {row.getValue("Message")}
           </span>
         </div>
       )
     },
   },
   {
-    accessorKey: "status",
+    accessorKey: "LogLevel",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => {
       const status = statuses.find(
-        (status) => status.value === row.getValue("status")
+        (status) => status.value === row.getValue("LogLevel")
       )
 
       if (!status) {
@@ -84,13 +84,13 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
-    accessorKey: "microservice",
+    accessorKey: "MicroserviceID",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Microservice" />
     ),
     cell: ({ row }) => {
       const microservice = microservices.find(
-        (microservice) => microservice.value === row.getValue("microservice")
+        (microservice) => microservice.value === row.getValue("MicroserviceID")
       )
 
       if (!microservice) {

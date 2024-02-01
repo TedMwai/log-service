@@ -27,17 +27,17 @@ async function getTasks() {
   return z.array(taskSchema).parse(tasks)
 }
 
-// get microservices
-async function getMicroservices() {
-  const microservices = await fetch("http://localhost:8080/microservices")
-  return microservices.json()
+// get logs
+async function getLogs() {
+  const logs = await fetch("http://localhost:8080/logs")
+  return logs.json()
 }
 
 export default async function HomePage() {
   const tasks = await getTasks()
-  const microservices = await getMicroservices()
+  const logs = await getLogs()
 
-  // console.log(microservices)
+  // console.log(logs)
 
   return (
     <>
@@ -88,9 +88,8 @@ export default async function HomePage() {
               </div>
             </div>
             <DataTable
-              data={tasks}
+              data={logs}
               columns={columns}
-              microservices={microservices}
             />
           </div>
         </div>
