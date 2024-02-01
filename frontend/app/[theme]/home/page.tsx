@@ -1,7 +1,6 @@
 import { promises as fs } from "fs"
 import path from "path"
 import { Metadata } from "next"
-import Image from "next/image"
 import { Activity, Bug, Timer } from "lucide-react"
 import { z } from "zod"
 
@@ -28,8 +27,17 @@ async function getTasks() {
   return z.array(taskSchema).parse(tasks)
 }
 
+// get microservices
+async function getMicroservices() {
+  const microservices = await fetch("http://localhost:8080/microservices")
+  return microservices.json()
+}
+
 export default async function HomePage() {
   const tasks = await getTasks()
+  const microservices = await getMicroservices()
+
+  // console.log(microservices)
 
   return (
     <>
@@ -79,7 +87,11 @@ export default async function HomePage() {
                 </h2>
               </div>
             </div>
-            <DataTable data={tasks} columns={columns} />
+            <DataTable
+              data={tasks}
+              columns={columns}
+              microservices={microservices}
+            />
           </div>
         </div>
       </div>
