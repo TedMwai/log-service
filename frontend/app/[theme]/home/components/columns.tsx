@@ -2,15 +2,14 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
-import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 
 import { microservices, statuses } from "../data/data"
-import { Task } from "../data/schema"
+import { LogSchema } from "../data/schema"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { DataTableRowActions } from "./data-table-row-actions"
 
-export const columns: ColumnDef<Task>[] = [
+export const columns: ColumnDef<LogSchema>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -33,16 +32,16 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "id",
+    accessorKey: "ID",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Log" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
+    cell: ({ row }) => <div className="max-w-fit">{row.getValue("ID")}</div>,
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "title",
+    accessorKey: "Message",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Description" />
     ),
@@ -50,20 +49,20 @@ export const columns: ColumnDef<Task>[] = [
       return (
         <div className="flex space-x-2">
           <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("title")}
+            {row.getValue("Message")}
           </span>
         </div>
       )
     },
   },
   {
-    accessorKey: "status",
+    accessorKey: "LogLevel",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => {
       const status = statuses.find(
-        (status) => status.value === row.getValue("status")
+        (status) => status.value === row.getValue("LogLevel")
       )
 
       if (!status) {
@@ -84,13 +83,13 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
-    accessorKey: "microservice",
+    accessorKey: "Microservice",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Microservice" />
     ),
     cell: ({ row }) => {
       const microservice = microservices.find(
-        (microservice) => microservice.value === row.getValue("microservice")
+        (microservice) => microservice.value === row.original.Microservice.Name
       )
 
       if (!microservice) {
