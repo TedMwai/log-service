@@ -1,12 +1,8 @@
-import {
-  BellRing,
-  Bug,
-  CircleDollarSign,
-  Info,
-  ShieldAlert,
-  Truck,
-  XCircle,
-} from "lucide-react"
+import { BellRing, Bug, CircleDollarSign, Info, ShieldAlert, Truck, XCircle } from "lucide-react";
+
+
+
+
 
 export const labels = [
   {
@@ -25,22 +21,22 @@ export const labels = [
 
 export const statuses = [
   {
-    value: "info",
+    value: "INFO",
     label: "INFO",
     icon: Info,
   },
   {
-    value: "debug",
+    value: "DEBUG",
     label: "DEBUG",
     icon: Bug,
   },
   {
-    value: "error",
+    value: "ERROR",
     label: "ERROR",
     icon: ShieldAlert,
   },
   {
-    value: "fatal",
+    value: "FATAL",
     label: "FATAL",
     icon: XCircle,
   },
@@ -48,18 +44,18 @@ export const statuses = [
 
 export const microservices = [
   {
-    label: "Payments",
-    value: "payments",
+    label: "Billing",
+    value: "Billing",
     icon: CircleDollarSign,
   },
   {
-    label: "Notifications",
-    value: "notifications",
+    label: "Notification",
+    value: "Notification",
     icon: BellRing,
   },
   {
     label: "Orders",
-    value: "orders",
+    value: "Orders",
     icon: Truck,
   },
 ]
