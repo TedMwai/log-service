@@ -26,23 +26,23 @@ export function DataTableToolbar<TData>({
       <div className="flex flex-1 items-center space-x-2">
         <Input
           placeholder="Filter logs..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("ID")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+            table.getColumn("ID")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        {table.getColumn("status") && (
+        {table.getColumn("LogLevel") && (
           <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
+            column={table.getColumn("LogLevel")}
+            title="status"
             options={statuses}
           />
         )}
-        {table.getColumn("microservice") && (
+        {table.getColumn("Microservice") && (
           <DataTableFacetedFilter
-            column={table.getColumn("microservice")}
-            title="Microservice"
+            column={table.getColumn("Microservice")}
+            title="microservice"
             options={microservices}
           />
         )}
